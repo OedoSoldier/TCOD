@@ -1,0 +1,22 @@
+{
+  "citation": "",
+  "description": "Custom dataset",
+  "splits": {
+    "train": {
+      "name": "train",
+      "num_examples": 3553
+    },
+    "test": {
+      "name": "test",
+      "num_examples": 140
+    },
+    "test_unseen": {
+      "name": "test_unseen",
+      "num_examples": 134
+    },
+    "train_hard": {
+      "name": "train_hard",
+      "num_examples": 121
+    }
+  }
+}

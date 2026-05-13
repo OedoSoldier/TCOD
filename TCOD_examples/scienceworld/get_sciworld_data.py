@@ -5,6 +5,7 @@ NOTE: You need to install the ScienceWorld dataset first: https://github.com/all
 import json
 import os
 import random
+from pathlib import Path
 
 random.seed(42)
 
@@ -98,13 +99,28 @@ def create_dataset_files(output_dir, train_task_names, test_task_names, jar_path
         json.dump(dataset_info, f, indent=2)
 
 
+def default_jar_path():
+    env_path = os.environ.get("SCIENCEWORLD_JAR_PATH")
+    if env_path:
+        return str(Path(env_path).expanduser().resolve())
+
+    try:
+        import scienceworld
+    except Exception as exc:
+        raise ImportError(
+            "ScienceWorld is not installed. Install it with `uv add scienceworld` "
+            "or set SCIENCEWORLD_JAR_PATH manually."
+        ) from exc
+
+    return str(Path(scienceworld.__file__).resolve().parent / "scienceworld.jar")
+
+
 if __name__ == "__main__":
-    # NOTE: Mannually set the jar path here.
-    jar_path = "/your/path/ScienceWorld/scienceworld/scienceworld.jar"
+    jar_path = default_jar_path()
     # Check if the jar file exists, raise an error if it doesn't exist.
     if not os.path.exists(jar_path):
         raise FileNotFoundError(
-            f"JAR file not found at {jar_path}, please set the jar path mannually."
+            f"JAR file not found at {jar_path}, please set SCIENCEWORLD_JAR_PATH manually."
         )
 
     current_file_dir = os.path.dirname(os.path.abspath(__file__))
